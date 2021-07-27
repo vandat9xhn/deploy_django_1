@@ -72,8 +72,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^http(s|)://localhost:",
+CORS_ALLOWED_ORIGIN = [
+    "http://localhost:8000",
 ]
 
 ROOT_URLCONF = 'react_django_1.urls'

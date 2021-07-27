@@ -1,0 +1,19 @@
+# test
+/__def_test
+/__default
+
+# front-end
+/react_1
+
+# media
+/media
+
+# back-end
+.idea
+__pycache__
+db.sqlite3
+manage.py
+
+*.pyc
+*.pot
+*.py[cod]

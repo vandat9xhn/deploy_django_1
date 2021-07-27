@@ -59,12 +59,12 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
-
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -75,6 +75,10 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGIN = [
     "http://localhost:8000",
 ]
+
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:8000",
+)
 
 ROOT_URLCONF = 'react_django_1.urls'
 

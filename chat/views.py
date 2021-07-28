@@ -102,7 +102,7 @@ class RoomCountView(RoomUserView, ListAPIView):
             last_mess__gt=F('last_receive')
         ).count()
 
-        return Response(data={'count': count_new})
+        return Response(data=count_new)
     
     
 class RoomViewR(RoomView, RetrieveAPIView):

@@ -7,7 +7,7 @@ from . import views
 
 urlpatterns = [
     path('room-l/', views.RoomViewL.as_view()),
-    path('room-count/', views.RoomCountView.as_view()),
+    path('room-count-new/', views.RoomCountView.as_view()),
     path('room-r/<slug:room_chat>/', views.RoomViewR.as_view()),
     # path('room-u/<slug:room_chat>/'),
 

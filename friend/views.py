@@ -113,7 +113,7 @@ class AddFriendCountNewView(AddFriendView, ListAPIView):
     def get(self, request, *args, **kwargs):
 
         count_new = self.queryset.filter(receiver=request.user.id, has_seen=False).count()
-        return Response(data={'count': count_new})
+        return Response(data=count_new)
 
 
 class AddFriendViewLC(AddFriendView, ListCreateAPIView):

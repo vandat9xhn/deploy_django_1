@@ -192,32 +192,32 @@ class Login(NoTokenView, CreateAPIView):
 
 
 def login(request, *args, **kwargs):
-        if request.method != 'POST':
-            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    if request.method != 'POST':
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
 
-        if not user:
-            return HttpResponse('Wrong')
+    if not user:
+        return HttpResponse('Wrong')
 
-        auth_login(request, user)
+    auth_login(request, user)
 
-        validated_data = get_data_save_refresh_from_account(username, password)
+    validated_data = get_data_save_refresh_from_account(username, password)
 
-        response = HttpResponse(data={
-            'access': validated_data['access'],
-            'life_time': validated_data['life_time'].total_seconds(),
-            **get_data_profile(user.id)
-        })
-        response.set_cookie(
-            key=settings.LOGIN_COOKIE_KEY,
-            value=make_cookie_from_account(username, password),
-            httponly=True
-        )
+    response = HttpResponse(json.dumps({
+        'access': validated_data['access'],
+        'life_time': validated_data['life_time'].total_seconds(),
+        **get_data_profile(user.id)
+    }))
+    response.set_cookie(
+        key=settings.LOGIN_COOKIE_KEY,
+        value=make_cookie_from_account(username, password),
+        httponly=True
+    )
 
-        return response
+    return response
 
 
 def logout(request):

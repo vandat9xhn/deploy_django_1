@@ -244,22 +244,22 @@ class DefineUser(NoTokenView, RetrieveAPIView):
         return Response(data=get_data_profile(user.id))
 
 
-# def define_user(request):
-#     # print(request.session.get('_auth_user_hash'))
-#     if request.user.id:
-#         return HttpResponse(json.dumps(
-#             get_data_profile(request.user.id)
-#         ))
-#
-#     username, password = load_account_from_cookie(request.COOKIES.get(settings.LOGIN_COOKIE_KEY))
-#     user = authenticate(username=username, password=password)
-#
-#     if not user:
-#         return HttpResponse('Not Login')
-#
-#     return HttpResponse(json.dumps(
-#         get_data_profile(user.id)
-#     ))
+def define_user(request):
+    # print(request.session.get('_auth_user_hash'))
+    if request.user.id:
+        return HttpResponse(json.dumps(
+            get_data_profile(request.user.id)
+        ))
+
+    username, password = load_account_from_cookie(request.COOKIES.get(settings.LOGIN_COOKIE_KEY))
+    user = authenticate(username=username, password=password)
+
+    if not user:
+        return HttpResponse('Not Login')
+
+    return HttpResponse(json.dumps(
+        get_data_profile(user.id)
+    ))
 
 
 #

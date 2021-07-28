@@ -10,6 +10,7 @@ urlpatterns = [
     # path('login/', views.Login.as_view()),
     path('login/', views.login),
     path('logout/', views.logout),
-    path('define-user/', views.DefineUser.as_view()),
+    # path('define-user/', views.DefineUser.as_view()),
+    path('define-user/', views.define_user),
     path('refresh-token/', views.CustomTokenRefreshView.as_view()),
 ]

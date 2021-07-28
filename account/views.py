@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 #
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, GenericAPIView
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
@@ -14,7 +14,6 @@ from .models import RefreshTokenModel
 from .serializers import CustomTokenObtainPairSerializer
 #
 from user_profile.models import ProfileModel, NameModel, PersonalSettingModel
-from user_profile.child_app.picture.models import PictureModel, CoverModel
 from user_profile.child_app.contact.models import MailModel
 from user_profile.child_app.relation.models import RelationModel
 from user_profile.child_app.basis.models import BirthModel, GenderModel, LanguageModel
@@ -161,33 +160,35 @@ class CustomTokenRefreshView(TokenRefreshView):
 
 
 #
-def login(request):
-    if request.method != 'POST':
-        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+class Login(NoTokenView, CreateAPIView):
 
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
+    def create(self, request, *args, **kwargs):
+        # if request.method != 'POST':
+        #     return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
-    if not user:
-        return HttpResponse('Wrong')
+        username = request.data['username']
+        password = request.data['password']
+        user = authenticate(username=username, password=password)
 
-    auth_login(request, user)
+        if not user:
+            return HttpResponse('Wrong')
 
-    validated_data = get_data_save_refresh_from_account(username, password)
+        auth_login(request, user)
 
-    response = HttpResponse(json.dumps({
-        'access': validated_data['access'],
-        'life_time': validated_data['life_time'].total_seconds(),
-        **get_data_profile(user.id)
-    }))
-    response.set_cookie(
-        key=settings.LOGIN_COOKIE_KEY,
-        value=make_cookie_from_account(username, password),
-        httponly=True
-    )
+        validated_data = get_data_save_refresh_from_account(username, password)
 
-    return response
+        response = Response(data={
+            'access': validated_data['access'],
+            'life_time': validated_data['life_time'].total_seconds(),
+            **get_data_profile(user.id)
+        })
+        response.set_cookie(
+            key=settings.LOGIN_COOKIE_KEY,
+            value=make_cookie_from_account(username, password),
+            httponly=True
+        )
+
+        return response
 
 
 def logout(request):

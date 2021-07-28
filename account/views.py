@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 #
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
@@ -197,22 +197,39 @@ def logout(request):
 
 
 #
-def define_user(request):
-    # print(request.session.get('_auth_user_hash'))
-    if request.user.id:
-        return HttpResponse(json.dumps(
-            get_data_profile(request.user.id)
-        ))
+class DefineUser(NoTokenView, RetrieveAPIView):
 
-    username, password = load_account_from_cookie(request.COOKIES.get(settings.LOGIN_COOKIE_KEY))
-    user = authenticate(username=username, password=password)
+    def get(self, request, *args, **kwargs):
+        # if request.user.id:
+        #     return HttpResponse(json.dumps(
+        #         get_data_profile(request.user.id)
+        #     ))
 
-    if not user:
-        return HttpResponse('Not Login')
+        username, password = load_account_from_cookie(request.COOKIES.get(settings.LOGIN_COOKIE_KEY))
+        user = authenticate(username=username, password=password)
 
-    return HttpResponse(json.dumps(
-        get_data_profile(user.id)
-    ))
+        if not user:
+            return Response(data='Not Login')
+
+        return Response(data=get_data_profile(user.id))
+
+
+# def define_user(request):
+#     # print(request.session.get('_auth_user_hash'))
+#     if request.user.id:
+#         return HttpResponse(json.dumps(
+#             get_data_profile(request.user.id)
+#         ))
+#
+#     username, password = load_account_from_cookie(request.COOKIES.get(settings.LOGIN_COOKIE_KEY))
+#     user = authenticate(username=username, password=password)
+#
+#     if not user:
+#         return HttpResponse('Not Login')
+#
+#     return HttpResponse(json.dumps(
+#         get_data_profile(user.id)
+#     ))
 
 
 #

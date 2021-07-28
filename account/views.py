@@ -171,7 +171,7 @@ class Login(NoTokenView, CreateAPIView):
         user = authenticate(username=username, password=password)
 
         if not user:
-            return HttpResponse('Wrong')
+            return Response('Wrong')
 
         auth_login(request, user)
 

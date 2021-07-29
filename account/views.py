@@ -215,7 +215,7 @@ def login(request, *args, **kwargs):
         key=settings.LOGIN_COOKIE_KEY,
         value=make_cookie_from_account(username, password),
         httponly=True,
-        samesite=None,
+        # samesite=None,
     )
 
     return response
@@ -352,4 +352,13 @@ class RegisterView(NoTokenView, CreateAPIView):
             'picture': '',
         }
 
-        return Response(data, status=status.HTTP_201_CREATED)
+        response = Response(data, status=status.HTTP_201_CREATED)
+
+        response.set_cookie(
+            key=settings.LOGIN_COOKIE_KEY,
+            value=make_cookie_from_account(username, password),
+            httponly=True,
+            # samesite=None,
+        )
+
+        return response

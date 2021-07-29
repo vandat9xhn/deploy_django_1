@@ -214,7 +214,8 @@ def login(request, *args, **kwargs):
     response.set_cookie(
         key=settings.LOGIN_COOKIE_KEY,
         value=make_cookie_from_account(username, password),
-        httponly=True
+        httponly=True,
+        samesite=None,
     )
 
     return response
